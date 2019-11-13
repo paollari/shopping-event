@@ -44,57 +44,67 @@ function addItemToShoppingList(itemName) {
 }
 
 function handleNewItemSubmit() {
-    $('#js-shopping-list-form').click(submit(addItemToShoppingList(itemName: any) console.log('`handleNewItemSubmit` ran');
-        let newItemName = $('.js-shopping-list-entry').val(); $('.js-shopping-list-entry').val(''); addItemToShoppingList(newItemName); renderShoppingList();
-    });
+    $('#js-shopping-list-form').on('submit', event => {
 
+        console.log('`handleNewItemSubmit` ran');
 
-    function toggleCheckedForListItem(itemId) {
-        console.log("Toggling checked property for item with id " + itemId);
-        const item = STORE.find(item => item.id === itemId);
-        item.checked = !item.checked;
-    }
+        let newItemName = $('.js-shopping-list-entry').val();
 
+        $('.js-shopping-list-entry').val('');
 
-    function getItemIdFromElement(item) {
-        return $(item)
-            .closest('li')
-            .data('item-id');
-    }
-
-    function handleItemCheckClicked() {
-        $('.shopping-item-toggle').on('click', event => {
-            console.log('`handleItemCheckClicked` ran');
-            let id = getItemIdFromElement(event.currentTarget);
-            toggleCheckedForListItem(id);
-            renderShoppingList();
-        });
-    }
-
-
-
-    function deleteListItem(itemId) {
-        console.log(`Deleting item with id  ${itemId} from shopping list`)
-        let itemIndex = STORE.findIndex(item => item.id === itemId);
-        STORE.splice(itemIndex, 1);
-    }
-
-
-    function handleDeleteItemClicked() {
-        $('.shopping-item-delete').on('click', event => {
-            let itemIndex = getItemIdFromElement(event.currentTarget);
-            deleteListItem(itemIndex);
-            renderShoppingList();
-        });
-    }
-
-
-    function handleShoppingList() {
+        addItemToShoppingList(newItemName);
         renderShoppingList();
-        handleNewItemSubmit();
-        handleItemCheckClicked();
-        handleDeleteItemClicked();
-    }
+
+    });
+}
 
 
-    $(handleShoppingList);
+function toggleCheckedForListItem(itemId) {
+    console.log("Toggling checked property for item with id " + itemId);
+    const item = STORE.find(item => item.id === itemId);
+    item.checked = !item.checked;
+}
+
+
+function getItemIdFromElement(item) {
+    return $(item)
+        .closest('li')
+        .data('item-id');
+}
+
+function handleItemCheckClicked() {
+    $('.shopping-item-toggle').on('click', event => {
+        console.log('`handleItemCheckClicked` ran');
+        let id = getItemIdFromElement(event.currentTarget);
+        toggleCheckedForListItem(id);
+        renderShoppingList();
+    });
+}
+
+
+
+function deleteListItem(itemId) {
+    console.log(`Deleting item with id  ${itemId} from shopping list`)
+    let itemIndex = STORE.findIndex(item => item.id === itemId);
+    STORE.splice(itemIndex, 1);
+}
+
+
+function handleDeleteItemClicked() {
+    $('.shopping-item-delete').on('click', event => {
+        let itemIndex = getItemIdFromElement(event.currentTarget);
+        deleteListItem(itemIndex);
+        renderShoppingList();
+    });
+}
+
+
+function handleShoppingList() {
+    renderShoppingList();
+    handleNewItemSubmit();
+    handleItemCheckClicked();
+    handleDeleteItemClicked();
+}
+
+
+$(handleShoppingList);
